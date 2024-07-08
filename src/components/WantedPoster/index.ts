@@ -9,10 +9,12 @@ import Name from './Name'
 import Photo from './Photo'
 import PhotoResizer from './PhotoResizer'
 import WantedImage from './WantedImage'
+import QrCodeImage from './QrCode'
 
 const TAG_NAME = 'wanted-poster'
 const ATTRIBUTES = [
   'name',
+  'link',
   'bounty',
   'name-spacing',
   'bounty-spacing',
@@ -41,6 +43,7 @@ class WantedPoster extends HTMLElement {
   #name: Name
   #bounty: Bounty
   #wantedImage: WantedImage
+  #qrCodeImage: QrCodeImage
   #status: 'init' | 'loading' | 'success' | 'error'
 
   #resizeObserver: ResizeObserver
@@ -70,6 +73,7 @@ class WantedPoster extends HTMLElement {
     this.#ctx = ctx
 
     this.#wantedImage = new WantedImage(ctx, ONE_PIECE_WANTED_IMAGE)
+    this.#qrCodeImage = new QrCodeImage(ctx)
     this.#photo = new Photo(ctx)
     this.#name = new Name(ctx)
     this.#bounty = new Bounty(ctx)
@@ -123,6 +127,7 @@ class WantedPoster extends HTMLElement {
         wantedImageInfo.boundaryOffset
       )
       await this.#photo.loadImage(this.getAttribute('photo-url'))
+      await this.#qrCodeImage.loadImage(this.getAttribute('link'))
     } catch (e) {
       this.#status = 'error'
       console.error('Failed to init wanted poster.', e)
@@ -184,6 +189,10 @@ class WantedPoster extends HTMLElement {
         this.#bounty.verticalOffset = parseFloat(newValue) || 0
         break
 
+      case 'link':
+        await this.#qrCodeImage.loadImage(newValue)
+        break
+
       case 'photo-url': {
         await this.#photo.loadImage(newValue)
         this.#photoResizer.highlight = newValue.endsWith('#nohighlight')
@@ -226,14 +235,15 @@ class WantedPoster extends HTMLElement {
 
     const posterShadow = this.#getAttrNumberValue('poster-shadow')
     const wantedImage = new WantedImage(ctx, ONE_PIECE_WANTED_IMAGE)
+    const qrCodeImage = new QrCodeImage(ctx)
     const photo = new Photo(ctx)
     const name = new Name(ctx)
     const bounty = new Bounty(ctx)
 
-    const image = await wantedImage.loadImage()
+    const wantedHTMLImage = await wantedImage.loadImage()
 
-    const exportWidth = image.width + posterShadow * 2
-    const exportHeight = image.height + posterShadow * 2
+    const exportWidth = wantedHTMLImage.width + posterShadow * 2
+    const exportHeight = wantedHTMLImage.height + posterShadow * 2
 
     const wantedImageInfo = wantedImage.setSize({
       width: exportWidth,
@@ -270,11 +280,13 @@ class WantedPoster extends HTMLElement {
     photo.filter = filter
 
     photo.updateRenderPosition()
+    await qrCodeImage.loadImage(this.getAttribute('link'))
 
     photo.render()
     wantedImage.render()
     bounty.render()
     name.render()
+    qrCodeImage.render()
 
     let url = ''
     try {
@@ -348,6 +360,7 @@ class WantedPoster extends HTMLElement {
     this.#ctx.clearRect(0, 0, this.#canvas.domWidth, this.#canvas.domHeight)
     this.#photo.render()
     this.#wantedImage.render()
+    this.#qrCodeImage.render()
     this.#bounty.render()
     this.#name.render()
     this.#photoResizer.render()

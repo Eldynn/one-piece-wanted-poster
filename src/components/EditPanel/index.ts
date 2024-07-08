@@ -11,6 +11,7 @@ template.innerHTML = templateContent
 
 class EditPanel extends HTMLElement {
   #nameInput: HTMLInputElement
+  #linkInput: HTMLInputElement
   #bountyInput: HTMLInputElement
 
   #nameSpacingSlider: RangeSlider
@@ -45,6 +46,7 @@ class EditPanel extends HTMLElement {
     shadowRoot.append(style, template.content.cloneNode(true))
 
     this.#nameInput = shadowRoot.querySelector<HTMLInputElement>('#nameInput')!
+    this.#linkInput = shadowRoot.querySelector<HTMLInputElement>('#linkInput')!
     this.#bountyInput =
       shadowRoot.querySelector<HTMLInputElement>('#bountyInput')!
 
@@ -94,6 +96,9 @@ class EditPanel extends HTMLElement {
       switch (key) {
         case 'name':
           this.#nameInput.value = value
+          break
+        case 'link':
+          this.#linkInput.value = value
           break
         case 'bounty':
           this.#bountyInput.value = value
@@ -164,6 +169,7 @@ class EditPanel extends HTMLElement {
     window.addEventListener('pointerdown', this.#pointerdownListener)
 
     addListener('name', this.#storeListener)
+    addListener('link', this.#storeListener)
     addListener('bounty', this.#storeListener)
     addListener('nameSpacing', this.#storeListener)
     addListener('bountySpacing', this.#storeListener)
@@ -182,6 +188,7 @@ class EditPanel extends HTMLElement {
     addListener('sepia', this.#storeListener)
 
     this.#nameInput.value = store.name
+    this.#linkInput.value = store.link
     this.#bountyInput.value = store.bounty.toString()
 
     this.#nameSpacingSlider.value = store.nameSpacing.toString()
@@ -204,6 +211,10 @@ class EditPanel extends HTMLElement {
     this.#nameInput.addEventListener(
       'input',
       () => (store.name = this.#nameInput.value)
+    )
+    this.#linkInput.addEventListener(
+      'input',
+      () => (store.link = this.#linkInput.value)
     )
     this.#nameSpacingSlider.addEventListener(
       'input',

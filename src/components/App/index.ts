@@ -79,6 +79,9 @@ class App extends HTMLElement {
 
     this.#storeListener = (key, value) => {
       switch (key) {
+        case 'link':
+          this.#setWantedPosterAttributes({ link: value.toString() })
+          break
         case 'photoUrl':
           this.#setWantedPosterAttributes({ 'photo-url': value.toString() })
           break
@@ -223,6 +226,7 @@ class App extends HTMLElement {
 
     this.#setWantedPosterAttributes({
       name: store.name,
+      link: store.link,
       bounty: store.bounty.toString(),
       'name-spacing': store.nameSpacing.toString(),
       'bounty-spacing': store.bountySpacing.toString(),
@@ -235,6 +239,7 @@ class App extends HTMLElement {
 
     addListener('photoUrl', this.#storeListener)
     addListener('name', this.#storeListener)
+    addListener('link', this.#storeListener)
     addListener('bounty', this.#storeListener)
     addListener('nameSpacing', this.#storeListener)
     addListener('bountyFontFamily', this.#storeListener)

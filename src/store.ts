@@ -11,6 +11,7 @@ interface FilterState {
 export interface AppState extends FilterState {
   photoUrl: string
   name: string
+  link: string
   bounty: string | number
   filter: string
   posterShadow: number
@@ -36,6 +37,7 @@ const LISTENERS: Map<AppStateKey, Array<Listener<AppStateKey>>> = new Map()
 const DEFAULT_STATE: AppState = {
   photoUrl: '',
   name: '',
+  link: '',
   bounty: '',
   nameSpacing: 0,
   bountySpacing: 1,

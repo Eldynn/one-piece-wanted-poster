@@ -11,7 +11,7 @@ const template = document.createElement('template')
 template.innerHTML = templateContent
 
 class OptcGalleryPanel extends HTMLElement {
-  #inputTimeoutId: number = 0
+  #inputTimeoutId?: NodeJS.Timeout
   #characterFamily: CharacterFamily | null = null
   #searchInput: HTMLInputElement
   #orderButton: IconButton
