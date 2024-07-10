@@ -23,8 +23,8 @@ export default class QrCodeImage {
     let image
     try {
       const qrCodeUrl = await QrCode.toDataURL(url, {
-        errorCorrectionLevel: 'H'
-        // width: 64
+        errorCorrectionLevel: 'H',
+        width: 80
       })
       console.log({ qrCodeUrl })
 

@@ -12,6 +12,7 @@ export interface AppState extends FilterState {
   photoUrl: string
   name: string
   link: string
+  deadOrAlive: 'dead' | 'alive' | 'deadOrAlive'
   bounty: string | number
   filter: string
   posterShadow: number
@@ -38,6 +39,7 @@ const DEFAULT_STATE: AppState = {
   photoUrl: '',
   name: '',
   link: '',
+  deadOrAlive: 'deadOrAlive',
   bounty: '',
   nameSpacing: 0,
   bountySpacing: 1,

@@ -2,6 +2,9 @@ import type { PosterCanvasElement, PosterRenderingContext2D } from './types'
 import { Position, WantedImageInfo } from './types'
 import { getFitScale, loadImage } from './utils'
 
+import wantedDeadImageUrl from './images/one-piece-wanted-dead.png'
+import wantedAliveImageUrl from './images/one-piece-wanted-alive.png'
+
 class WantedImage {
   #ctx: PosterRenderingContext2D
   #canvas: PosterCanvasElement
@@ -18,10 +21,25 @@ class WantedImage {
     this.#wantedImageInfo = info
   }
 
-  async loadImage() {
+  async loadImage(deadOrAlive: string | null) {
     let image
+    console.log({
+      deadOrAlive,
+      image:
+        deadOrAlive === 'dead'
+          ? wantedDeadImageUrl
+          : deadOrAlive === 'alive'
+          ? wantedAliveImageUrl
+          : this.#wantedImageInfo.imageUrl
+    })
     try {
-      image = await loadImage(this.#wantedImageInfo.imageUrl)
+      image = await loadImage(
+        deadOrAlive === 'dead'
+          ? wantedDeadImageUrl
+          : deadOrAlive === 'alive'
+          ? wantedAliveImageUrl
+          : this.#wantedImageInfo.imageUrl
+      )
       this.#image = image
     } catch (error) {
       console.error(error)
@@ -154,7 +172,12 @@ class WantedImage {
   }
 
   render() {
+    this.#ctx.save()
+
+    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height)
+
     if (!this.#image) {
+      this.#ctx.restore()
       return
     }
     this.#ctx.save()

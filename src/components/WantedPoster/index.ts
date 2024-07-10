@@ -15,6 +15,7 @@ const TAG_NAME = 'wanted-poster'
 const ATTRIBUTES = [
   'name',
   'link',
+  'dead-or-alive',
   'bounty',
   'name-spacing',
   'bounty-spacing',
@@ -106,7 +107,7 @@ class WantedPoster extends HTMLElement {
     const rect = this.#container.getBoundingClientRect()
 
     try {
-      await this.#wantedImage.loadImage()
+      await this.#wantedImage.loadImage(this.getAttribute('deadOrAlive'))
 
       const wantedImageInfo = this.#wantedImage.setSize({
         width: rect.width,
@@ -193,6 +194,10 @@ class WantedPoster extends HTMLElement {
         await this.#qrCodeImage.loadImage(newValue)
         break
 
+      case 'dead-or-alive':
+        await this.#wantedImage.loadImage(newValue)
+        break
+
       case 'photo-url': {
         await this.#photo.loadImage(newValue)
         this.#photoResizer.highlight = newValue.endsWith('#nohighlight')
@@ -240,7 +245,9 @@ class WantedPoster extends HTMLElement {
     const name = new Name(ctx)
     const bounty = new Bounty(ctx)
 
-    const wantedHTMLImage = await wantedImage.loadImage()
+    const wantedHTMLImage = await wantedImage.loadImage(
+      this.getAttribute('deadOrAlive')
+    )
 
     const exportWidth = wantedHTMLImage.width + posterShadow * 2
     const exportHeight = wantedHTMLImage.height + posterShadow * 2

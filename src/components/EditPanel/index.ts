@@ -12,6 +12,7 @@ template.innerHTML = templateContent
 class EditPanel extends HTMLElement {
   #nameInput: HTMLInputElement
   #linkInput: HTMLInputElement
+  #deadOrAliveInput: HTMLInputElement
   #bountyInput: HTMLInputElement
 
   #nameSpacingSlider: RangeSlider
@@ -47,6 +48,8 @@ class EditPanel extends HTMLElement {
 
     this.#nameInput = shadowRoot.querySelector<HTMLInputElement>('#nameInput')!
     this.#linkInput = shadowRoot.querySelector<HTMLInputElement>('#linkInput')!
+    this.#deadOrAliveInput =
+      shadowRoot.querySelector<HTMLInputElement>('#deadOrAliveInput')!
     this.#bountyInput =
       shadowRoot.querySelector<HTMLInputElement>('#bountyInput')!
 
@@ -99,6 +102,9 @@ class EditPanel extends HTMLElement {
           break
         case 'link':
           this.#linkInput.value = value
+          break
+        case 'deadOrAlive':
+          this.#deadOrAliveInput.value = value
           break
         case 'bounty':
           this.#bountyInput.value = value
@@ -170,6 +176,7 @@ class EditPanel extends HTMLElement {
 
     addListener('name', this.#storeListener)
     addListener('link', this.#storeListener)
+    addListener('deadOrAlive', this.#storeListener)
     addListener('bounty', this.#storeListener)
     addListener('nameSpacing', this.#storeListener)
     addListener('bountySpacing', this.#storeListener)
@@ -189,6 +196,7 @@ class EditPanel extends HTMLElement {
 
     this.#nameInput.value = store.name
     this.#linkInput.value = store.link
+    this.#deadOrAliveInput.value = store.deadOrAlive
     this.#bountyInput.value = store.bounty.toString()
 
     this.#nameSpacingSlider.value = store.nameSpacing.toString()
@@ -215,6 +223,14 @@ class EditPanel extends HTMLElement {
     this.#linkInput.addEventListener(
       'input',
       () => (store.link = this.#linkInput.value)
+    )
+    this.#deadOrAliveInput.addEventListener(
+      'input',
+      () =>
+        (store.deadOrAlive = this.#deadOrAliveInput.value as
+          | 'deadOrAlive'
+          | 'dead'
+          | 'alive')
     )
     this.#nameSpacingSlider.addEventListener(
       'input',

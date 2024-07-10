@@ -82,6 +82,9 @@ class App extends HTMLElement {
         case 'link':
           this.#setWantedPosterAttributes({ link: value.toString() })
           break
+        case 'deadOrAlive':
+          this.#setWantedPosterAttributes({ 'dead-or-alive': value.toString() })
+          break
         case 'photoUrl':
           this.#setWantedPosterAttributes({ 'photo-url': value.toString() })
           break
@@ -227,6 +230,7 @@ class App extends HTMLElement {
     this.#setWantedPosterAttributes({
       name: store.name,
       link: store.link,
+      'dead-or-alive': store.deadOrAlive,
       bounty: store.bounty.toString(),
       'name-spacing': store.nameSpacing.toString(),
       'bounty-spacing': store.bountySpacing.toString(),
@@ -240,6 +244,7 @@ class App extends HTMLElement {
     addListener('photoUrl', this.#storeListener)
     addListener('name', this.#storeListener)
     addListener('link', this.#storeListener)
+    addListener('deadOrAlive', this.#storeListener)
     addListener('bounty', this.#storeListener)
     addListener('nameSpacing', this.#storeListener)
     addListener('bountyFontFamily', this.#storeListener)
