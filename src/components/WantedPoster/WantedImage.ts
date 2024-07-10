@@ -23,15 +23,6 @@ class WantedImage {
 
   async loadImage(deadOrAlive: string | null) {
     let image
-    console.log({
-      deadOrAlive,
-      image:
-        deadOrAlive === 'dead'
-          ? wantedDeadImageUrl
-          : deadOrAlive === 'alive'
-          ? wantedAliveImageUrl
-          : this.#wantedImageInfo.imageUrl
-    })
     try {
       image = await loadImage(
         deadOrAlive === 'dead'
@@ -172,12 +163,7 @@ class WantedImage {
   }
 
   render() {
-    this.#ctx.save()
-
-    this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height)
-
     if (!this.#image) {
-      this.#ctx.restore()
       return
     }
     this.#ctx.save()
