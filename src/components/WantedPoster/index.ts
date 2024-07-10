@@ -107,7 +107,7 @@ class WantedPoster extends HTMLElement {
     const rect = this.#container.getBoundingClientRect()
 
     try {
-      await this.#wantedImage.loadImage(this.getAttribute('deadOrAlive'))
+      await this.#wantedImage.loadImage(this.getAttribute('dead-or-alive'))
 
       const wantedImageInfo = this.#wantedImage.setSize({
         width: rect.width,
@@ -246,7 +246,7 @@ class WantedPoster extends HTMLElement {
     const bounty = new Bounty(ctx)
 
     const wantedHTMLImage = await wantedImage.loadImage(
-      this.getAttribute('deadOrAlive')
+      this.getAttribute('dead-or-alive')
     )
 
     const exportWidth = wantedHTMLImage.width + posterShadow * 2
@@ -293,7 +293,7 @@ class WantedPoster extends HTMLElement {
     wantedImage.render()
     bounty.render()
     name.render()
-    qrCodeImage.render()
+    qrCodeImage.render(true)
 
     let url = ''
     try {

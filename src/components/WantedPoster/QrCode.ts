@@ -75,12 +75,17 @@ export default class QrCodeImage extends GraphicObject {
     this.#imageScale = scale
   }
 
-  render(): void {
+  render(exportRender = false): void {
     if (!this.#image) {
       return
     }
 
-    const { x, y, width, height } = this.#renderPosition
+    let { x, y } = this.#renderPosition
+    const { width, height } = this.#renderPosition
+    if (!exportRender) {
+      x -= 21
+      y -= 66
+    }
     this.ctx.drawImage(this.#image, x, y, width, height)
 
     this.ctx.restore()
