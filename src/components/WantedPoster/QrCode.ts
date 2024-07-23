@@ -4,7 +4,7 @@ import { getFitScale, loadImage } from './utils'
 import GraphicObject from './GraphicObject'
 import { Position } from './types'
 
-const QR_CODE_SIZE = 96
+const QR_CODE_SIZE = 128
 
 export default class QrCodeImage extends GraphicObject {
   shadow = 0
